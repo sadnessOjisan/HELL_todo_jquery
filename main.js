@@ -1,20 +1,25 @@
+// memo: - DOMが完全に読み込まれた時にスクリプトが実行されるようにする
 $(document).ready(function () {
     // 初期化処理
-    $.ajax({
+    $.ajax({ // memo: - todo全件をfetchする
         type: "GET",
         url: "https://json-now-ohjoczewvz.now.sh/todos"
     })
     .done((data) => {
-        console.log(data)
+        // memo: - fetch成功時の処理
+        // memo: - 取得したtodoたちを1件ずつ画面に描画する
         for(var i=0; i<data.length; i++){
             var todo = data[i]
             if(todo.isDone === "true"){
+                // memo: - すでに実施したtodoはチェックボックスを入れてある
                 $('#todos-area').append('<p class="checked"><input checked type="checkbox" class="todo-check" id=' + todo.id + ' /><span>' + todo.task + '</span></p>')      
             }else{
                 $('#todos-area').append('<p class="unchecked"><input type="checkbox" class="todo-check" id=' + todo.id + ' /><span>' + todo.task + '</span></p>')      
             }
         }
+        // memo: - checkが付いていないtodoの数を表示する
         $('#remain').text($('#todos-area input:checkbox').length-$('#todos-area input:checkbox:checked').length)
+        // memo: - checkされたときに走る処理を記述. CSSを当てたり、checkされたかの更新をサーバーに送る. 
         $('.todo-check').on('click', function(e){
             var isChecked = $(this).is(':checked')
             var clickedId = $(this).attr('id')
@@ -29,7 +34,7 @@ $(document).ready(function () {
             }
             var taskDOM = $("#" + clickedId).next()
             var task = taskDOM.text()
-            console.log(task)
+            // memo: - taskの達成をチェックしたら、その結果をサーバーに送る更新機能
             $.ajax({
                 type: "PUT",
                 url: "https://json-now-ohjoczewvz.now.sh/todos/" + clickedId,
@@ -43,6 +48,7 @@ $(document).ready(function () {
         alert('fail!')
     });
 
+    // memo: - filterの状態を取得. filterのtoggleを宣言
     var filterState = $('#filter-state').text()
         if(filterState === '' || filterState === 'on'){
             $('#filter-state').text('off')
@@ -52,10 +58,11 @@ $(document).ready(function () {
             $('#todos-area input:checkbox:checked').parent().removeClass('hide')
         }
 
-    // todo 追加処理
+    // memo: - formからtodoを登録された時の, todoの追加処理
     $('#submit-form').submit(function (event) {
         event.preventDefault();
         var todo = $('#submit-form [name=todo]').val();
+        // memo: - 入力されたtodoをサーバーに送る
         $.ajax({
                 type: "POST",
                 url: "https://json-now-ohjoczewvz.now.sh/todos",
@@ -64,9 +71,10 @@ $(document).ready(function () {
                     isDone: false
                 }
             })
-            .done((data) => {
+            .done((data) => { // memo: - 入力した値をtaskに追加
                 $('#todos-area').append('<p class="unchecked"><input type="checkbox" class="todo-check" id=' + data.id + ' /><span>' + data.task + '</span></p>')
                 $('#remain').text($('#todos-area input:checkbox').length-$('#todos-area input:checkbox:checked').length)
+                // memo: - 新しく追加されたtodoに対するイベントを宣言
                 $('.todo-check').on('click', function(e){
                     var isChecked = $(this).is(':checked')
                     var clickedId = $(this).attr('id')
@@ -79,6 +87,7 @@ $(document).ready(function () {
                         todoDom.removeClass("checked")
                         todoDom.addClass("unchecked")
                     }
+                    // memo: - taskの達成をチェックしたら、その結果をサーバーに送る更新機能
                     $.ajax({
                         type: "POST",
                         url: "https://json-now-ohjoczewvz.now.sh/todos/" + clickedId,
@@ -92,9 +101,6 @@ $(document).ready(function () {
                 alert('fail!')
             });
     });
-
-    // 更新処理
-    
 
     // filter toggle処理
     $('#filter-btn').on('click', function(){
