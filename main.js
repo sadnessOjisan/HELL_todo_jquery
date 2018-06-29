@@ -8,7 +8,11 @@ $(document).ready(function () {
         console.log(data)
         for(var i=0; i<data.length; i++){
             var todo = data[i]
-            $('#todos-area').append('<p class="unchecked"><input type="checkbox" class="todo-check" id=' + todo.id + ' /><span>' + todo.task + '</span></p>')      
+            if(todo.isDone === "true"){
+                $('#todos-area').append('<p class="checked"><input checked type="checkbox" class="todo-check" id=' + todo.id + ' /><span>' + todo.task + '</span></p>')      
+            }else{
+                $('#todos-area').append('<p class="unchecked"><input type="checkbox" class="todo-check" id=' + todo.id + ' /><span>' + todo.task + '</span></p>')      
+            }
         }
         $('#remain').text($('#todos-area input:checkbox').length-$('#todos-area input:checkbox:checked').length)
         $('.todo-check').on('click', function(e){
@@ -38,6 +42,15 @@ $(document).ready(function () {
     }).fail((data) => {
         alert('fail!')
     });
+
+    var filterState = $('#filter-state').text()
+        if(filterState === '' || filterState === 'on'){
+            $('#filter-state').text('off')
+            $('#todos-area input:checkbox:checked').parent().addClass('hide')
+        }else{
+            $('#filter-state').text('on')
+            $('#todos-area input:checkbox:checked').parent().removeClass('hide')
+        }
 
     // todo 追加処理
     $('#submit-form').submit(function (event) {
