@@ -1,7 +1,8 @@
 .unchecked{
-    color: red;
+    color: black
 }
 
 .checked{
-    color: blue
+    color: gray;
+    text-decoration: line-through;
 }
