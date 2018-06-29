@@ -48,7 +48,6 @@ $(document).ready(function () {
                 $('.todo-check').on('click', function(e){
                     var isChecked = $(this).is(':checked')
                     var clickedId = $(this).attr('id')
-                    console.log(clickedId)
                     $('#remain').text($('#todos-area input:checkbox').length-$('#todos-area input:checkbox:checked').length)
                     var todoDom = $("#" + clickedId).parent()
                     if(isChecked){
@@ -64,9 +63,15 @@ $(document).ready(function () {
             });
     });
 
-    $('#remain').text($('#todos-area input:checkbox').length-$('#todos-area input:checkbox:checked').length)
-
-    $('.todo-check').on('click', function(e){
-        console.log(e)
+    // filter toggle処理
+    $('#filter-btn').on('click', function(){
+        var filterState = $('#filter-state').text()
+        if(filterState === '' || filterState === 'on'){
+            $('#filter-state').text('off')
+            $('#todos-area input:checkbox:checked').parent().addClass('hide')
+        }else{
+            $('#filter-state').text('on')
+            $('#todos-area input:checkbox:checked').parent().removeClass('hide')
+        }
     })
 });

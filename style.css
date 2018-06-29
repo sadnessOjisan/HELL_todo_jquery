@@ -6,3 +6,7 @@
     color: gray;
     text-decoration: line-through;
 }
+
+.hide{
+    display: none;
+}
