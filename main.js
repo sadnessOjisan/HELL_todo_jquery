@@ -8,16 +8,14 @@ $(document).ready(function () {
         console.log(data)
         for(var i=0; i<data.length; i++){
             var todo = data[i]
-            $('#todos-area').append('<p class="unchecked"><input type="checkbox" class="todo-check" id=todo_' + todo.id + ' /><span>' + todo.task + '</span></p>')      
+            $('#todos-area').append('<p class="unchecked"><input type="checkbox" class="todo-check" id=' + todo.id + ' /><span>' + todo.task + '</span></p>')      
         }
         $('#remain').text($('#todos-area input:checkbox').length-$('#todos-area input:checkbox:checked').length)
         $('.todo-check').on('click', function(e){
             var isChecked = $(this).is(':checked')
             var clickedId = $(this).attr('id')
-            console.log(clickedId)
             $('#remain').text($('#todos-area input:checkbox').length-$('#todos-area input:checkbox:checked').length)
             var todoDom = $("#" + clickedId).parent()
-            console.log(todoDom)
             if(isChecked){
                 todoDom.removeClass("unchecked")
                 todoDom.addClass("checked")
@@ -25,6 +23,17 @@ $(document).ready(function () {
                 todoDom.removeClass("checked")
                 todoDom.addClass("unchecked")
             }
+            var taskDOM = $("#" + clickedId).next()
+            var task = taskDOM.text()
+            console.log(task)
+            $.ajax({
+                type: "PUT",
+                url: "https://json-now-ohjoczewvz.now.sh/todos/" + clickedId,
+                data: {
+                    task: task,
+                    isDone: isChecked
+                }
+            })
         })
     }).fail((data) => {
         alert('fail!')
@@ -43,7 +52,7 @@ $(document).ready(function () {
                 }
             })
             .done((data) => {
-                $('#todos-area').append('<p class="unchecked"><input type="checkbox" class="todo-check" id=todo_' + data.id + ' /><span>' + data.task + '</span></p>')
+                $('#todos-area').append('<p class="unchecked"><input type="checkbox" class="todo-check" id=' + data.id + ' /><span>' + data.task + '</span></p>')
                 $('#remain').text($('#todos-area input:checkbox').length-$('#todos-area input:checkbox:checked').length)
                 $('.todo-check').on('click', function(e){
                     var isChecked = $(this).is(':checked')
@@ -57,11 +66,22 @@ $(document).ready(function () {
                         todoDom.removeClass("checked")
                         todoDom.addClass("unchecked")
                     }
+                    $.ajax({
+                        type: "POST",
+                        url: "https://json-now-ohjoczewvz.now.sh/todos/" + clickedId,
+                        data: {
+                            task: data.task,
+                            isDone: isChecked
+                        }
+                    })
                 })
             }).fail((data) => {
                 alert('fail!')
             });
     });
+
+    // 更新処理
+    
 
     // filter toggle処理
     $('#filter-btn').on('click', function(){
