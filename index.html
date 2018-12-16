@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="utf-8" />
     <title>HELL_todo_jQuery</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="./main.js"></script>
-    <link rel="stylesheet" href="./style.css">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.min.css"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
 
-<body>
+  <body>
     <h1>Todo</h1>
     <form id="submit-form">
-        タスク: <input name='todo' />
-        <input type="submit" />
+      タスク: <input name="todo" /> <br />
+      <input type="submit" value="送信する" />
     </form>
-    <button id='filter-btn'>フィルター</button><span id='filter-state'></span>
-    <p>残り<span id='remain'></span>個</p>
-    <div id="todos-area">
-    </div>
-</body>
-
+    <button id="filter-btn">フィルター<span id="filter-state"></span></button>
+    <p>残り<span id="remain"></span>個</p>
+    <div id="todos-area"></div>
+  </body>
 </html>
