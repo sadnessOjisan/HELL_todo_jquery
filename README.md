@@ -1,5 +1,7 @@
 # HELL_todo_jquery
 
+[React勉強会のノウハウを紹介します](https://engineer.recruit-lifestyle.co.jp/techblog/2019-01-17-react-training/) で紹介されるコード. このコードが最終的に、[react-redux-todo](https://github.com/sadnessOjisan/react-redux-todo)になる. 
+
 React ハンズオンの教材コード
 
 地獄のような jQuery (昔の自分のコードです)
